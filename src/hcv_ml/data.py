@@ -12,8 +12,7 @@ from hcv_ml.config import (
 )
 
 
-def resolve_dataset_path(dataset_path: str | Path | None = None) -> Path:
-    """Resolve o caminho do CSV, aceitando caminho explicito ou padroes locais."""
+def resolve_dataset_path(dataset_path: str | Path | None = None) -> Path: #caminho csv
     if dataset_path is not None:
         path = Path(dataset_path)
         if path.exists():
@@ -27,8 +26,7 @@ def resolve_dataset_path(dataset_path: str | Path | None = None) -> Path:
     raise FileNotFoundError("dataset nao encontrado.")
 
 
-def load_hcv_dataset(dataset_path: str | Path | None = None) -> pd.DataFrame:
-    """Carrega o CSV e normaliza valores ausentes."""
+def load_hcv_dataset(dataset_path: str | Path | None = None) -> pd.DataFrame: #normalização de alguns valores ausentes
     path = resolve_dataset_path(dataset_path)
     df = pd.read_csv(path, na_values=["NA", "N/A", "", "nan", "NaN"])
 
@@ -38,8 +36,7 @@ def load_hcv_dataset(dataset_path: str | Path | None = None) -> pd.DataFrame:
     return df
 
 
-def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
-    """Separa atributos de entrada e alvo."""
+def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:  #separa o que o modelo vai tentar aprender x adivinhar
     if TARGET_COLUMN not in df.columns:
         raise KeyError(f"Coluna alvo ausente: {TARGET_COLUMN}")
 
@@ -48,5 +45,5 @@ def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
         columns_to_drop.append(ID_COLUMN)
 
     X = df.drop(columns=columns_to_drop)
-    y = df[TARGET_COLUMN]
+    y = df[TARGET_COLUMN]  #rotulo category que o não supervisionado vai tentar adivinhar
     return X, y
