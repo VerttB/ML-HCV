@@ -1,0 +1,5 @@
+# Aprendizado de Máquina Clássico: Um estudo com o dataset HCV data
+
+Este trabalho apresenta o desenvolvimento de um pipeline de aprendizagem de máquina clássica aplicado ao diagnóstico de doenças hepáticas associadas à Hepatite C, utilizando o dataset \textit{HCV Data}, disponibilizado no repositório UCI Machine Learning Repository. Serão exploradas duas abordagens complementares: aprendizagem supervisionada, com a comparação entre os algoritmos K-Nearest Neighbors (KNN), Árvore de Decisão e Rede Neural Artificial, e aprendizagem não supervisionada, por meio do algoritmo K-Means aplicado ao mesmo conjunto de dados.
+
+O estudo considera decisões de pré-processamento como tratamento de valores faltantes, normalização, codificação de atributos e balanceamento de classes, além da definição de um protocolo experimental rigoroso com separação entre conjuntos de treino, validação e teste. Ao final, será realizada uma análise crítica comparativa entre os modelos supervisionados e uma interpretação dos agrupamentos obtidos de forma não supervisionada, avaliando métricas como acurácia, F1-score, matriz de confusão, inércia e \textit{silhouette score}.
