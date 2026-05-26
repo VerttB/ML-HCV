@@ -26,12 +26,12 @@ def resolve_dataset_path(dataset_path: str | Path | None = None) -> Path: #camin
     raise FileNotFoundError("dataset nao encontrado.")
 
 
-def load_hcv_dataset(dataset_path: str | Path | None = None) -> pd.DataFrame: #normalização de alguns valores ausentes
+def load_hcv_dataset(dataset_path: str | Path | None = None) -> pd.DataFrame:
     path = resolve_dataset_path(dataset_path)
-    df = pd.read_csv(path, na_values=["NA", "N/A", "", "nan", "NaN"])
+    df = pd.read_csv(path, na_values=["NA", "N/A", "", "nan", "NaN"]) #padroniza os nulos como NaN
 
     if "" in df.columns:
-        df = df.rename(columns={"": ID_COLUMN})
+        df = df.rename(columns={"": ID_COLUMN}) #preenche colunas de nome vazio
 
     return df
 
