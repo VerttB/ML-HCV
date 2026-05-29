@@ -169,6 +169,133 @@ K-Means:
 python scripts/03_kmeans.py
 ```
 
+## Como interpretar o K-Means
+
+K-Means e um algoritmo de aprendizagem nao supervisionada. Diferente dos
+modelos supervisionados, ele nao recebe a coluna `Category` durante o treino.
+O objetivo e agrupar registros parecidos entre si usando apenas os atributos de
+entrada, como idade, sexo e exames laboratoriais.
+
+No projeto, a coluna `Category` e usada apenas depois que os clusters sao
+formados. Essa comparacao posterior ajuda a interpretar se os grupos encontrados
+pelo algoritmo possuem alguma relacao com as categorias clinicas reais, mas nao
+faz parte do treinamento do K-Means.
+
+O script de K-Means compara `k=2`, `k=3`, `k=4` e `k=5`.
+Para cada valor de `k`, ele salva:
+
+- inercia e silhouette para apoiar a escolha do numero de clusters;
+- ARI e NMI para comparar os clusters com `Category` apenas depois do treino;
+- tabela cruzada `cluster x Category`;
+- perfil numerico dos clusters com medias e medianas dos exames.
+
+### O que e `k`
+
+`k` e o numero de clusters que o K-Means deve formar. Como o algoritmo nao sabe
+sozinho quantos grupos existem, o projeto testa diferentes valores de `k`.
+
+Neste trabalho, sao comparados:
+
+- `k=2`: pode indicar uma separacao mais geral, como perfil saudavel versus
+  perfil alterado/doente;
+- `k=3`: permite investigar uma separacao possivel entre saudavel,
+  intermediario e grave;
+- `k=4`: serve como comparacao intermediaria;
+- `k=5`: permite comparar com a quantidade de classes reais em `Category`,
+  embora o K-Means nao use esses rotulos no treino.
+
+### Inercia
+
+A inercia mede o quanto os pontos estao proximos do centro do cluster ao qual
+foram atribuídos. Quanto menor a inercia, mais compactos estao os clusters.
+
+Ela sempre tende a diminuir quando `k` aumenta, porque mais clusters permitem
+aproximar melhor cada ponto de algum centro. Por isso, a inercia nao deve ser
+usada sozinha. O ideal e procurar um ponto de "cotovelo", isto e, um valor de
+`k` a partir do qual a reducao da inercia passa a ser pequena.
+
+### Silhouette
+
+O silhouette score mede se os pontos estao bem encaixados no proprio cluster e
+bem separados dos outros clusters. O valor costuma variar de -1 a 1:
+
+- valores proximos de 1 indicam clusters bem separados;
+- valores proximos de 0 indicam clusters sobrepostos ou pouco definidos;
+- valores negativos indicam que muitos pontos podem ter sido atribuídos ao
+  cluster errado.
+
+Neste projeto, silhouette e uma metrica importante para escolher `k`, porque
+ajuda a verificar se os agrupamentos fazem sentido estruturalmente, sem olhar
+para `Category`.
+
+### ARI e NMI
+
+ARI, ou Adjusted Rand Index, e NMI, ou Normalized Mutual Information, comparam
+os clusters encontrados com os rotulos reais de `Category`.
+
+Essas metricas sao usadas apenas para interpretacao posterior. Elas nao
+transformam o K-Means em supervisionado, porque `Category` nao entra no treino.
+
+- ARI mede o quanto os pares de registros ficaram agrupados de forma parecida
+  com os pares definidos pelos rotulos reais;
+- NMI mede a quantidade de informacao compartilhada entre os clusters e as
+  classes reais.
+
+Valores maiores indicam maior alinhamento entre clusters e classes reais.
+Valores baixos indicam que os agrupamentos encontrados pelo K-Means nao
+reproduzem bem as categorias clinicas do dataset.
+
+### Tabela `cluster x Category`
+
+A tabela cruzada mostra quantos registros de cada classe real ficaram em cada
+cluster. Ela e essencial para interpretar os grupos.
+
+Exemplo de pergunta que essa tabela ajuda a responder:
+
+- algum cluster concentra muitos casos de cirrose?
+- doadores saudaveis ficaram majoritariamente juntos?
+- hepatite e fibrose aparecem misturadas?
+- os clusters se parecem com as classes reais ou revelam outra estrutura?
+
+### Perfil numerico dos clusters
+
+O perfil numerico resume cada cluster usando medias e medianas dos exames
+laboratoriais. Ele ajuda a entender a caracteristica clinica de cada grupo.
+
+Por exemplo, um cluster com menor `ALB` e `CHE`, mas maior `AST`, `BIL` e `GGT`,
+pode indicar um grupo com perfil laboratorial mais alterado, possivelmente mais
+associado a doenca hepatica avancada.
+
+Os resultados gerais ficam em `results/kmeans/tables/` e
+`results/kmeans/figures/` apenas quando comparam todos os valores de `k`.
+Tabelas e figuras especificas de um valor de `k` ficam somente na pasta
+daquela configuracao:
+
+```text
+results/kmeans/
+  k_2/
+    summary.md
+    tables/
+    figures/
+  k_3/
+    summary.md
+    tables/
+    figures/
+  k_4/
+    summary.md
+    tables/
+    figures/
+  k_5/
+    summary.md
+    tables/
+    figures/
+```
+
+O arquivo `kmeans_best_k_by_silhouette.csv` indica qual valor de `k` foi
+favorecido pela silhouette. O `summary.md` de cada pasta compila as metricas,
+a tabela `cluster x Category`, o perfil numerico resumido dos clusters e os
+arquivos gerados naquela configuracao.
+
 Os resultados sao separados por etapa/metodo:
 
 - `results/exp_analysis/`: tabelas e figuras da analise exploratoria;

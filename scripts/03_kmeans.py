@@ -12,8 +12,8 @@ from hcv_ml.kmeans_func import save_kmeans_results
 def main() -> None:
     df = load_hcv_dataset()
     X, y = split_features_target(df)
-    save_kmeans_results(X, y, n_clusters=3)
-    print("Resultados do K-Means salvos em results/kmeans/.")
+    save_kmeans_results(X, y)
+    print("Resultados do K-Means para k=2 ate k=5 salvos em results/kmeans/.")
 
 
 if __name__ == "__main__":
