@@ -23,6 +23,15 @@ ML-HCV/
     supervised/
       figures/
       tables/
+      knn/
+        figures/
+        tables/
+      decision_tree/
+        figures/
+        tables/
+      neural_network/
+        figures/
+        tables/
     kmeans/
       figures/
       tables/
@@ -146,6 +155,14 @@ Modelos supervisionados utilizados:
 - Arvore de Decisao (`DecisionTreeClassifier`);
 - Rede Neural Artificial (`MLPClassifier`).
 
+Metricas supervisionadas geradas:
+
+- Acuracia: proporcao geral de acertos.
+- Precisao: entre as predicoes de uma classe, quantas estavam corretas.
+- Sensibilidade: capacidade de encontrar corretamente os exemplos de cada classe.
+- Seletividade: capacidade de reconhecer corretamente exemplos que nao pertencem a uma classe.
+- Balanced accuracy e F1 macro tambem sao salvas nas tabelas.
+
 K-Means:
 
 ```powershell
@@ -156,4 +173,7 @@ Os resultados sao separados por etapa/metodo:
 
 - `results/exp_analysis/`: tabelas e figuras da analise exploratoria;
 - `results/supervised/`: metricas, tabelas e graficos dos modelos supervisionados;
+- `results/supervised/knn/`: resultados especificos do KNN;
+- `results/supervised/decision_tree/`: resultados especificos da Arvore de Decisao;
+- `results/supervised/neural_network/`: resultados especificos da Rede Neural;
 - `results/kmeans/`: tabelas, metricas e figuras do K-Means.
