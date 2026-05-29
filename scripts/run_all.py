@@ -36,7 +36,7 @@ def main() -> None:
     print("Resultados supervisionados salvos em results/supervised/.")
 
     print("\n[3/3] Rodando K-Means...")
-    save_kmeans_results(X, y, n_clusters=3)
+    save_kmeans_results(X, y)
     print("Resultados do K-Means salvos em results/kmeans/.")
 
     print("\nTudo pronto. Resultados atualizados em results/.")
