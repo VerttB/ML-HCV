@@ -6,15 +6,10 @@ venv/
 env/
 .env
 
-results/**/*.png
-results/**/*.jpg
-results/**/*.jpeg
-results/**/*.svg
 results/**/*.csv
-results/**/*.xlsx
+
 *.joblib
 
-data/*.csv
 !data/README.md
 !results/**/.gitkeep
 !notebooks/.gitkeep
