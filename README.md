@@ -6,7 +6,7 @@ O estudo considera decisões de pré-processamento como tratamento de valores fa
 
 # ML-HCV
 
-Estrutura inicial do codigo para o Trabalho 2 de Aprendizagem de Maquina Classica usando o dataset HCV.
+Estrutura inicial do código para o Trabalho 2 de Iteligência Artificial, com foco em aprendizagem de máquina clássica usando o dataset HCV.
 
 ## Estrutura
 
