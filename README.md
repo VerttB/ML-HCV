@@ -188,6 +188,8 @@ Para cada valor de `k`, ele salva:
 - ARI e NMI para comparar os clusters com `Category` apenas depois do treino;
 - tabela cruzada `cluster x Category`;
 - perfil numerico dos clusters com medias e medianas dos exames.
+- grafico PCA 2D colorido pelas classes reais, salvo em
+  `results/kmeans/figures/pca_real_classes.png`.
 
 ### O que e `k`
 
@@ -265,6 +267,18 @@ laboratoriais. Ele ajuda a entender a caracteristica clinica de cada grupo.
 Por exemplo, um cluster com menor `ALB` e `CHE`, mas maior `AST`, `BIL` e `GGT`,
 pode indicar um grupo com perfil laboratorial mais alterado, possivelmente mais
 associado a doenca hepatica avancada.
+
+### PCA por classes reais
+
+O grafico `pca_real_classes.png` mostra uma projecao em duas dimensoes dos
+registros, colorida pela classe real `Category`. Ele e usado apenas como
+visualizacao exploratoria: o PCA reduz os atributos para dois componentes
+principais, entao a imagem ajuda a observar sobreposicoes, mas nao substitui as
+metricas dos modelos.
+
+Esse grafico e util para explicar por que as classes intermediarias, como
+`Hepatitis` e `Fibrosis`, sao dificeis de separar e por que o K-Means encontrou
+uma estrutura mais forte em `k=2`.
 
 Os resultados gerais ficam em `results/kmeans/tables/` e
 `results/kmeans/figures/` apenas quando comparam todos os valores de `k`.

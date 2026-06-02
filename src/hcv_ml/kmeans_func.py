@@ -10,6 +10,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, silhouette_score
 from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA
 
 from hcv_ml.config import (
     KMEANS_FIGURES_DIR,
@@ -76,6 +77,50 @@ def plot_k_selection(k_results: pd.DataFrame) -> None:
     fig.tight_layout()
     fig.savefig(KMEANS_FIGURES_DIR / "kmeans_k_selection.png", dpi=160)
     plt.close(fig)
+
+
+def plot_pca_real_classes(X: pd.DataFrame, y: pd.Series) -> None:
+    """Salva uma projecao PCA 2D colorida pelas classes reais.
+
+    O PCA e usado aqui apenas como visualizacao exploratoria. Ele reduz os
+    atributos pre-processados para duas dimensoes, ajudando a observar se as
+    classes reais aparecem separadas ou sobrepostas no espaco dos dados.
+    """
+    preprocessor = build_preprocessor(scale_numeric=True)
+    X_processed = preprocessor.fit_transform(X)
+
+    pca = PCA(n_components=2, random_state=RANDOM_STATE)
+    components = pca.fit_transform(X_processed)
+
+    pca_df = pd.DataFrame(
+        {
+            "PC1": components[:, 0],
+            "PC2": components[:, 1],
+            TARGET_COLUMN: y.values,
+        }
+    )
+
+    plt.figure(figsize=(9, 6))
+    for category in sorted(pca_df[TARGET_COLUMN].unique()):
+        category_data = pca_df[pca_df[TARGET_COLUMN] == category]
+        plt.scatter(
+            category_data["PC1"],
+            category_data["PC2"],
+            label=category,
+            alpha=0.75,
+            s=34,
+            edgecolors="white",
+            linewidths=0.3,
+        )
+
+    explained = pca.explained_variance_ratio_
+    plt.xlabel(f"PC1 ({explained[0] * 100:.1f}% da variancia)")
+    plt.ylabel(f"PC2 ({explained[1] * 100:.1f}% da variancia)")
+    plt.title("Projecao PCA dos registros por classe real")
+    plt.legend(title=TARGET_COLUMN, bbox_to_anchor=(1.02, 1), loc="upper left")
+    plt.tight_layout()
+    plt.savefig(KMEANS_FIGURES_DIR / "pca_real_classes.png", dpi=180)
+    plt.close()
 
 
 def build_kmeans_pipeline(n_clusters: int) -> Pipeline:
@@ -267,6 +312,7 @@ def save_kmeans_results(X: pd.DataFrame, y: pd.Series) -> None:
     k_results = evaluate_k_values(X, k_min=k_min, k_max=k_max)
     k_results.to_csv(KMEANS_TABLES_DIR / "kmeans_k_selection.csv", index=False)
     plot_k_selection(k_results)
+    plot_pca_real_classes(X, y)
 
     external_metric_rows = [
         save_single_k_results(X, y, k=k) for k in K_VALUES_TO_COMPARE
